@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:myevents/screens/login_screen.dart';
 
 class SignupScreen extends StatelessWidget {
   final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController  = TextEditingController();
-  final TextEditingController phoneController     = TextEditingController();
-  final TextEditingController passwordController  = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   SignupScreen({super.key});
 
@@ -20,13 +21,9 @@ class SignupScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 60),
-              Image.asset(
-                'assets/images/logo.png',
-                height: 100,
-              ),
+              Image.asset('assets/image/logo.png', height: 100),
               SizedBox(height: 40),
 
-              
               Row(
                 children: [
                   Expanded(
@@ -76,8 +73,9 @@ class SignupScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                   
-                    Navigator.pushReplacementNamed(context, '/login');
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Account Created')));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: green,
@@ -93,7 +91,10 @@ class SignupScreen extends StatelessWidget {
               SizedBox(height: 12),
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
                 },
                 child: Text(
                   'Already have an account?',

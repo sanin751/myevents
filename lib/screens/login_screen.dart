@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myevents/screens/dashboard_screen.dart';
+import 'package:myevents/screens/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController phoneController = TextEditingController();
@@ -8,7 +10,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final purple = Color(0xFF4B0082);
     final green = Colors.greenAccent;
 
@@ -19,14 +20,10 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 60),
-          
-              Image.asset(
-                'assets/images/logo.png',
-                height: 100,
-              ),
+
+              Image.asset('assets/image/logo.png', height: 100),
               SizedBox(height: 40),
 
-             
               TextField(
                 controller: phoneController,
                 decoration: InputDecoration(
@@ -37,7 +34,6 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
 
-             
               TextField(
                 controller: passwordController,
                 obscureText: true,
@@ -48,27 +44,32 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: 24),
 
-              
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                   
-                    Navigator.pushReplacementNamed(context, '/dashboard');
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Login Successful')));
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DashboardScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: purple,
                     padding: EdgeInsets.symmetric(vertical: 16),
                   ),
-                  child: Text('Log In'),
+                  child: Text('Log In', style: TextStyle(color: Colors.white)),
                 ),
               ),
 
               SizedBox(height: 12),
               TextButton(
-                onPressed: () {
-                
-                },
+                onPressed: () {},
                 child: Text(
                   'Forgotten password?',
                   style: TextStyle(color: purple),
@@ -83,7 +84,10 @@ class LoginScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/signup');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignupScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: green,
@@ -97,7 +101,7 @@ class LoginScreen extends StatelessWidget {
               ),
 
               Spacer(),
-             
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
