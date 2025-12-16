@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myevents/screens/bottom_screen/home_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -35,6 +36,13 @@ class _DashboardPageState extends State<DashboardScreen> {
                 });
                 Navigator.pop(context);
               }),
+              _buildDrawerItem('Home', Icons.home, () {
+                setState(() {
+                  _selectedMenu = 'Home';
+                });
+                Navigator.pop(context); // closes drawer only
+              }),
+
               _buildDrawerItem('Notification', Icons.notifications, () {}),
               _buildDrawerItem('Bookings', Icons.book_online, () {}),
               _buildDrawerItem('Profile', Icons.person, () {}),
@@ -84,7 +92,6 @@ class _DashboardPageState extends State<DashboardScreen> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 24),
-
             Wrap(
               spacing: 16,
               runSpacing: 16,
@@ -97,6 +104,10 @@ class _DashboardPageState extends State<DashboardScreen> {
           ],
         ),
       );
+    }
+
+    if (_selectedMenu == 'Home') {
+      return HomeScreen();
     }
 
     return Center(child: Text('$_selectedMenu page — under construction'));
