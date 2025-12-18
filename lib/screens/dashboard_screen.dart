@@ -13,7 +13,7 @@ class _DashboardPageState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final purple = Color(0xFF4B0082);
+    final purple = Color.fromARGB(252, 202, 60, 60);
     final lightGrey = Colors.grey.shade200;
 
     return Scaffold(
@@ -86,6 +86,6 @@ class _DashboardPageState extends State<DashboardScreen> {
       return HomeScreen();
     }
 
-    return Center(child: Text('$_selectedMenu page — under construction'));
+    return Center(child: Text('$_selectedMenu '));
   }
 }
