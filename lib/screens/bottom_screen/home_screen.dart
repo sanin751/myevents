@@ -7,11 +7,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final services = [
       {"title": "Banquet", "image": "assets/image/banquet.jpeg"},
-      {"title": "Decoration", "image": "assets/image/banquet.jpeg"},
-      {"title": "Photography", "image": "assets/image/banquet.jpeg"},
-      {"title": "Videography", "image": "assets/image/banquet.jpeg"},
-      {"title": "Catering", "image": "assets/image/banquet.jpeg"},
-      {"title": "Music & DJ", "image": "assets/image/banquet.jpeg"},
+      {"title": "Decoration", "image": "assets/image/decoration.png"},
+      {"title": "Photography/Videography", "image": "assets/image/photo.png"},
+      {"title": "Catering", "image": "assets/image/catering.png"},
+      {"title": "Music & DJ", "image": "assets/image/music.png"},
     ];
 
     return Padding(
@@ -20,7 +19,7 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Services",
+            "Our Services",
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
