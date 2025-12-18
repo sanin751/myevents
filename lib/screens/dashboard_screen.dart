@@ -9,7 +9,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardScreen> {
-  String _selectedMenu = 'Services';
+  String _selectedMenu = 'Home';
 
   @override
   Widget build(BuildContext context) {
@@ -23,27 +23,29 @@ class _DashboardPageState extends State<DashboardScreen> {
           child: Column(
             children: [
               ListTile(
-                title: Text(
-                  'MY Events',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                title: Row(
+                  children: [
+                    Image.asset('assets/image/logo.png', height: 60, width: 60),
+                    SizedBox(width: 10),
+                    Text(
+                      'MY Events',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Divider(),
 
-              _buildDrawerItem('Services', Icons.event, () {
-                setState(() {
-                  _selectedMenu = 'Services';
-                });
-                Navigator.pop(context);
-              }),
               _buildDrawerItem('Home', Icons.home, () {
                 setState(() {
                   _selectedMenu = 'Home';
                 });
-                Navigator.pop(context); // closes drawer only
+                Navigator.pop(context);
               }),
 
-              _buildDrawerItem('Notification', Icons.notifications, () {}),
               _buildDrawerItem('Bookings', Icons.book_online, () {}),
               _buildDrawerItem('Profile', Icons.person, () {}),
               _buildDrawerItem('Settings', Icons.settings, () {}),
@@ -60,7 +62,6 @@ class _DashboardPageState extends State<DashboardScreen> {
           ),
         ),
       ),
-
       body: _buildBody(lightGrey, purple),
     );
   }
@@ -81,53 +82,10 @@ class _DashboardPageState extends State<DashboardScreen> {
   }
 
   Widget _buildBody(Color bgColor, Color accent) {
-    if (_selectedMenu == 'Services') {
-      return Padding(
-        padding: EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Services',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 24),
-            Wrap(
-              spacing: 16,
-              runSpacing: 16,
-              children: [
-                _serviceCard('Banquet'),
-                _serviceCard('Decoration Packages'),
-                _serviceCard('Photography / Video'),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
-
     if (_selectedMenu == 'Home') {
       return HomeScreen();
     }
 
     return Center(child: Text('$_selectedMenu page — under construction'));
-  }
-
-  Widget _serviceCard(String title) {
-    return Container(
-      width: 150,
-      height: 100,
-      decoration: BoxDecoration(
-        color: Colors.pink.shade50,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
   }
 }
