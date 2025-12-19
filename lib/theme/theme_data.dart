@@ -7,12 +7,12 @@ ThemeData getApplicationTheme() {
       displayMedium: TextStyle(fontSize: 18),
     ),
 
-    scaffoldBackgroundColor: Color.fromARGB(255, 221, 248, 90),
+    scaffoldBackgroundColor: Color.fromARGB(255, 247, 248, 191),
     fontFamily: "Bricolage",
 
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
-      selectedItemColor: Color(0xFFFFAE37),
+      selectedItemColor: Color.fromARGB(245, 247, 187, 102),
       unselectedItemColor: Color.fromARGB(255, 110, 110, 110),
       selectedIconTheme: IconThemeData(size: 30),
       selectedLabelStyle: TextStyle(fontSize: 18),
