@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myevents/screens/bottom_screen/home_screen.dart';
+import 'package:myevents/features/dashboard/presentation/pages/bottom_screen/home_screen.dart';
+
 
 
 class BottomNavigationScreen extends StatefulWidget {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myevents/app/theme/theme_data.dart';
+import 'package:myevents/features/auth/presentation/pages/splash_screen.dart';
 
-import 'package:myevents/screens/splash_screen.dart';
-import 'package:myevents/theme/theme_data.dart';
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myevents/screens/login_screen.dart';
+import 'package:myevents/features/auth/presentation/pages/onboarding_screen1.dart';
 
-class OnboardingScreen2 extends StatelessWidget {
-  const OnboardingScreen2({super.key});
+
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class OnboardingScreen2 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Book Venues, Decor & Photos\nAll in One Place",
+                "Plan your event\nwith ease",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 26,
@@ -26,9 +27,9 @@ class OnboardingScreen2 extends StatelessWidget {
               const SizedBox(height: 24),
 
               Text(
-                "Plan your perfect event effortlessly\nwith trusted vendors",
+                "Book venues, decorations, photography\nand more in one place",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.black),
+                style: TextStyle(fontSize: 15, color: Colors.black),
               ),
 
               const SizedBox(height: 40),
@@ -45,13 +46,15 @@ class OnboardingScreen2 extends StatelessWidget {
                     elevation: 3,
                   ),
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => OnboardingScreen1(),
+                      ),
                     );
                   },
                   child: const Text(
-                    "Get Started",
+                    "Continue",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

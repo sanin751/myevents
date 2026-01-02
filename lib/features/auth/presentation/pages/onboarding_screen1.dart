@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myevents/screens/onboarding_screen1.dart';
+import 'package:myevents/features/auth/presentation/pages/onboarding_screen2.dart';
 
-class OnboardingScreen extends StatelessWidget {
-  const OnboardingScreen({super.key});
+
+class OnboardingScreen1 extends StatelessWidget {
+  const OnboardingScreen1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class OnboardingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Plan your event\nwith ease",
+                "Discover Event Services\nin One Place",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 26,
@@ -26,7 +27,7 @@ class OnboardingScreen extends StatelessWidget {
               const SizedBox(height: 24),
 
               Text(
-                "Book venues, decorations, photography\nand more in one place",
+                "Find venues, catering, photography\nand more with ease",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15, color: Colors.black),
               ),
@@ -48,7 +49,7 @@ class OnboardingScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => OnboardingScreen1(),
+                        builder: (context) => OnboardingScreen2(),
                       ),
                     );
                   },

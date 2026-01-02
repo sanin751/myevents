@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myevents/screens/onboarding_screen2.dart';
+import 'package:myevents/features/auth/presentation/pages/login_screen.dart';
 
-class OnboardingScreen1 extends StatelessWidget {
-  const OnboardingScreen1({super.key});
+
+class OnboardingScreen2 extends StatelessWidget {
+  const OnboardingScreen2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class OnboardingScreen1 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Discover Event Services\nin One Place",
+                "Book Venues, Decor & Photos\nAll in One Place",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 26,
@@ -26,9 +27,9 @@ class OnboardingScreen1 extends StatelessWidget {
               const SizedBox(height: 24),
 
               Text(
-                "Find venues, catering, photography\nand more with ease",
+                "Plan your perfect event effortlessly\nwith trusted vendors",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, color: Colors.black),
+                style: TextStyle(fontSize: 14, color: Colors.black),
               ),
 
               const SizedBox(height: 40),
@@ -45,15 +46,13 @@ class OnboardingScreen1 extends StatelessWidget {
                     elevation: 3,
                   ),
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => OnboardingScreen2(),
-                      ),
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
                     );
                   },
                   child: const Text(
-                    "Continue",
+                    "Get Started",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
