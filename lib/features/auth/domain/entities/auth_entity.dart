@@ -1,11 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-
 class AuthEntity extends Equatable {
   final String? authId;
   final String firstName;
   final String lastName;
-  final String? phoneNumber;
+  final String? email;
   final String? password;
   final String? profilePicture;
 
@@ -13,7 +12,7 @@ class AuthEntity extends Equatable {
     this.authId,
     required this.firstName,
     required this.lastName,
-    this.phoneNumber,
+    this.email,
     this.password,
     this.profilePicture,
   });
@@ -23,7 +22,7 @@ class AuthEntity extends Equatable {
     authId,
     firstName,
     lastName,
-    phoneNumber,
+    email,
     password,
     profilePicture,
   ];
