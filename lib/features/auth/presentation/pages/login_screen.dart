@@ -8,8 +8,7 @@ import 'package:myevents/features/auth/presentation/view_models/auth_viewmodel.d
 import 'package:myevents/features/dashboard/presentation/pages/dashboard_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-
-const LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -17,30 +16,30 @@ const LoginScreen({super.key});
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  
-  final TextEditingController phoneController = TextEditingController();
+
+  final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
 
   @override
   void dispose() {
-    phoneController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
-  Future<void> _handleLogin() async {
 
+  Future<void> _handleLogin() async {
     if (formKey.currentState!.validate()) {
       await ref
           .read(authViewModelProvider.notifier)
           .login(
-            phoneNumber: phoneController.text.trim(),
+            email: emailController.text.trim(),
             password: passwordController.text,
           );
     }
   }
 
-   void _navigateToSignup() {
+  void _navigateToSignup() {
     AppRoutes.push(context, const SignupScreen());
   }
 
@@ -48,6 +47,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.authenticated) {
+        SnackbarUtils.showSuccess(context, 'Login successful! Welcome back.');
         AppRoutes.pushReplacement(context, const DashboardScreen());
       } else if (next.status == AuthStatus.error && next.errorMessage != null) {
         SnackbarUtils.showError(context, next.errorMessage!);
@@ -65,21 +65,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Column(
               children: [
                 SizedBox(height: 60),
-            
+
                 Image.asset('assets/image/logo.png', height: 100),
                 SizedBox(height: 40),
-            
-                TextField(
-                  controller: phoneController,
+
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Email';
+                    }
+                    return null;
+                  },
+                  controller: emailController,
                   decoration: InputDecoration(
-                    labelText: 'Mobile Number',
+                    labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 16),
-            
-                TextField(
+
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Password';
+                    }
+                    return null;
+                  },
                   controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -88,7 +100,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 24),
-            
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -97,10 +109,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       backgroundColor: purple,
                       padding: EdgeInsets.symmetric(vertical: 16),
                     ),
-                    child: Text('Log In', style: TextStyle(color: Colors.white)),
+                    child: Text(
+                      'Log In',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
-            
+
                 SizedBox(height: 12),
                 TextButton(
                   onPressed: () {},
@@ -109,10 +124,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     style: TextStyle(color: purple),
                   ),
                 ),
-            
+
                 SizedBox(height: 8),
                 Text('or'),
-            
+
                 SizedBox(height: 8),
                 SizedBox(
                   width: double.infinity,
@@ -128,9 +143,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                 ),
-            
+
                 Spacer(),
-            
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

@@ -20,7 +20,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   final TextEditingController lastNameController = TextEditingController();
 
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
   @override
@@ -28,9 +28,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     firstNameController.dispose();
     lastNameController.dispose();
     passwordController.dispose();
-    phoneController.dispose();
+    emailController.dispose();
     super.dispose();
   }
+
   Future<void> _handleSignup() async {
     if (formKey.currentState!.validate()) {
       await ref
@@ -38,14 +39,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           .register(
             firstName: firstNameController.text.trim(),
             lastName: lastNameController.text.trim(),
-            phoneNumber: phoneController.text.trim(),
+            email: emailController.text.trim(),
             password: passwordController.text,
           );
     }
   }
 
   void _navigateToFirstOnboardingScreen() {
-    AppRoutes.pushReplacement(context,LoginScreen());
+    AppRoutes.pushReplacement(context, LoginScreen());
   }
 
   @override
@@ -75,52 +76,76 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 SizedBox(height: 60),
                 Image.asset('assets/image/logo.png', height: 100),
                 SizedBox(height: 40),
-            
+
                 Row(
                   children: [
                     Expanded(
-                      child: TextField(
+                      child: TextFormField(
                         controller: firstNameController,
                         decoration: InputDecoration(
                           labelText: 'First Name',
                           border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your first name';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     SizedBox(width: 16),
                     Expanded(
-                      child: TextField(
+                      child: TextFormField(
                         controller: lastNameController,
                         decoration: InputDecoration(
                           labelText: 'Last Name',
                           border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your Last name';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 16),
-            
-                TextField(
-                  controller: phoneController,
+
+                TextFormField(
+                  controller: emailController,
                   decoration: InputDecoration(
-                    labelText: 'Mobile Number',
+                    labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
-                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Email';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 16),
-            
-                TextField(
+
+                TextFormField(
                   controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'New Password',
                     border: OutlineInputBorder(),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Password';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 24),
-            
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -135,7 +160,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     ),
                   ),
                 ),
-            
+
                 SizedBox(height: 12),
                 TextButton(
                   onPressed: () {
