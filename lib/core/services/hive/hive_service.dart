@@ -49,10 +49,10 @@ class HiveService {
   }
 
   // Login - find user by email and password
-  AuthHiveModel? login(String phoneNumber, String password) {
+  AuthHiveModel? login(String email, String password) {
     try {
       return _authBox.values.firstWhere(
-        (user) => user.phoneNumber == phoneNumber && user.password == password,
+        (user) => user.email == email && user.password == password,
       );
     } catch (e) {
       return null;
