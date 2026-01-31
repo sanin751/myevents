@@ -62,100 +62,101 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Form(
             key: formKey,
-            child: Column(
-              children: [
-                SizedBox(height: 60),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 60),
 
-                Image.asset('assets/image/logo.png', height: 100),
-                SizedBox(height: 40),
+                  Image.asset('assets/image/logo.png', height: 100),
+                  SizedBox(height: 40),
 
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your Email';
-                    }
-                    return null;
-                  },
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                SizedBox(height: 16),
-
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your Password';
-                    }
-                    return null;
-                  },
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 24),
-
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _handleLogin,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: purple,
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your Email';
+                      }
+                      return null;
+                    },
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
                     ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  SizedBox(height: 16),
+
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your Password';
+                      }
+                      return null;
+                    },
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 24),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _handleLogin,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: purple,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: Text(
+                        'Log In',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 12),
+                  TextButton(
+                    onPressed: () {},
                     child: Text(
-                      'Log In',
-                      style: TextStyle(color: Colors.white),
+                      'Forgotten password?',
+                      style: TextStyle(color: purple),
                     ),
                   ),
-                ),
 
-                SizedBox(height: 12),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Forgotten password?',
-                    style: TextStyle(color: purple),
-                  ),
-                ),
+                  SizedBox(height: 8),
+                  Text('or'),
 
-                SizedBox(height: 8),
-                Text('or'),
-
-                SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _navigateToSignup,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: green,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: Text(
-                      'Create New Account',
-                      style: TextStyle(color: Colors.black),
+                  SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _navigateToSignup,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: green,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: Text(
+                        'Create New Account',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(height: 24),
 
-                Spacer(),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(onPressed: () {}, child: Text('About')),
-                    Text('|'),
-                    TextButton(onPressed: () {}, child: Text('Help')),
-                  ],
-                ),
-                SizedBox(height: 16),
-              ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(onPressed: () {}, child: Text('About')),
+                      Text('|'),
+                      TextButton(onPressed: () {}, child: Text('Help')),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
         ),

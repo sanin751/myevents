@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myevents/features/dashboard/presentation/pages/bottom_screen/home_screen.dart';
-
+import 'package:myevents/features/profile/presentation/pages/profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -12,13 +12,12 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardPageState extends State<DashboardScreen> {
   int _currentIndex = 0;
 
-  final List<String> _titles = ['Home', 'Bookings', 'Profile', 'Settings'];
+  final List<String> _titles = ['Home', 'Bookings', 'Settings'];
 
   final List<Widget> _screens = const [
     HomeScreen(),
     Center(child: Text('Bookings')),
-    Center(child: Text('Profile')),
-    Center(child: Text('Settings')),
+    ProfileScreen(),
   ];
 
   @override
@@ -48,7 +47,6 @@ class _DashboardPageState extends State<DashboardScreen> {
             icon: Icon(Icons.book_online),
             label: 'Bookings',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
