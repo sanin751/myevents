@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myevents/app/app.dart';
 import 'package:myevents/core/services/hive/hive_service.dart';
 import 'package:myevents/core/services/storage/user_session_service.dart';
+import 'package:myevents/sensor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -16,7 +17,7 @@ void main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
-      child: const MyApp(),
+      child: SensorManagerDetector(child: const MyApp()),
     ),
   );
 }
