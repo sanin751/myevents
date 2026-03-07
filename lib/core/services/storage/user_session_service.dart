@@ -28,38 +28,24 @@ class UserSessionService {
   UserSessionService({required SharedPreferences prefs}) : _prefs = prefs;
 
   // Save user session after login
-  Future<void> saveUserSession({
-    String? userId,
-    String? email,
-    String? firstName,
-    String? lastName,
-    String? phoneNumber,
-    String? batchId,
-    String? profilePicture,
-  }) async {
-    await _prefs.setBool(_keyIsLoggedIn, true);
-    if (userId != null) {
-      await _prefs.setString(_keyUserId, userId);
-    }
-    if (email != null) {
-      await _prefs.setString(_keyUserEmail, email);
-    }
-    if (firstName != null) {
-      await _prefs.setString(_keyUserFullName, firstName);
-    }
-    if (lastName != null) {
-      await _prefs.setString(_keyUserUsername, lastName);
-    }
-    if (phoneNumber != null) {
-      await _prefs.setString(_keyUserPhoneNumber, phoneNumber);
-    }
-    if (batchId != null) {
-      await _prefs.setString(_keyUserBatchId, batchId);
-    }
-    if (profilePicture != null) {
-      await _prefs.setString(_keyUserProfilePicture, profilePicture);
-    }
+ Future<void> saveUserSession({
+  required String userId,
+  required String email,
+  String? firstName,
+  String? lastName,
+}) async {
+  await _prefs.setBool(_keyIsLoggedIn, true);
+  await _prefs.setString(_keyUserId, userId);
+  await _prefs.setString(_keyUserEmail, email);
+
+  if (firstName != null) {
+    await _prefs.setString(_keyUserFullName, firstName);
   }
+
+  if (lastName != null) {
+    await _prefs.setString(_keyUserUsername, lastName);
+  }
+}
 
   // Check if user is logged in
   bool isLoggedIn() {

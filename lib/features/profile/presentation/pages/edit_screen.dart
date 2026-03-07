@@ -36,7 +36,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final userSession = ref.read(userSessionServiceProvider);
     final userId = userSession.getCurrentUserId();
 
-    if (userId != null) {
+    print("User ID from session: $userId");
+
+    if (userId != null && userId.isNotEmpty) {
       await ref
           .read(profileViewModelProvider.notifier)
           .getProfileById(userId: userId);

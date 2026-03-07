@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myevents/features/dashboard/presentation/pages/booking_screen.dart';
 import 'package:myevents/features/dashboard/presentation/pages/bottom_screen/home_screen.dart';
 import 'package:myevents/features/profile/presentation/pages/profile_screen.dart';
 
@@ -16,13 +17,13 @@ class _DashboardPageState extends State<DashboardScreen> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    Center(child: Text('Bookings')),
+    BookingScreen(),
     ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final purple = Color(0xFFD84315);
+    final purple = const Color(0xFFD84315);
 
     return Scaffold(
       appBar: AppBar(
@@ -36,17 +37,21 @@ class _DashboardPageState extends State<DashboardScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
+
         onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
         },
+
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.book_online),
             label: 'Bookings',
           ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',

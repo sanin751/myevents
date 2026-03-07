@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'banquet_screen.dart';
+import 'decoration_screen.dart';
+import 'music_screen.dart';
+import 'photography_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     final services = [
       {"title": "Banquet", "image": "assets/image/banquet.jpeg"},
       {"title": "Decoration", "image": "assets/image/decoration.png"},
-      {"title": "Photography/Videography", "image": "assets/image/photo.png"},
+      {"title": "Photography", "image": "assets/image/photo.png"},
       {"title": "Catering", "image": "assets/image/catering.png"},
       {"title": "Music & DJ", "image": "assets/image/music.png"},
     ];
@@ -29,13 +33,65 @@ class HomeScreen extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _ServiceIcon(icon: Icons.apartment, label: "Banquet"),
-              _ServiceIcon(icon: Icons.celebration, label: "Decoration"),
-              _ServiceIcon(icon: Icons.music_note, label: "Music & DJ"),
-              _ServiceIcon(icon: Icons.camera, label: "Photography"),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BanquetScreen(),
+                    ),
+                  );
+                },
+                child: const _ServiceIcon(
+                  icon: Icons.apartment,
+                  label: "Banquet",
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DecorationScreen(),
+                    ),
+                  );
+                },
+                child: const _ServiceIcon(
+                  icon: Icons.celebration,
+                  label: "Decoration",
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MusicScreen(),
+                    ),
+                  );
+                },
+                child: const _ServiceIcon(
+                  icon: Icons.music_note,
+                  label: "Music & DJ",
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PhotographyScreen(),
+                    ),
+                  );
+                },
+                child: const _ServiceIcon(
+                  icon: Icons.camera,
+                  label: "Photography",
+                ),
+              ),
             ],
           ),
 
@@ -105,9 +161,44 @@ class HomeScreen extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               final service = services[index];
-              return _ServiceCard(
-                image: service["image"] as String,
-                title: service["title"] as String,
+              return GestureDetector(
+                onTap: () {
+                  if (service["title"] == "Banquet") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BanquetScreen(),
+                      ),
+                    );
+                  } else if (service["title"] == "Decoration") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DecorationScreen(),
+                      ),
+                    );
+                  } else if (service["title"] == "Music & DJ") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MusicScreen(),
+                      ),
+                    );
+                  } else if (service["title"].toString().startsWith(
+                    "Photography",
+                  )) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PhotographyScreen(),
+                      ),
+                    );
+                  }
+                },
+                child: _ServiceCard(
+                  image: service["image"] as String,
+                  title: service["title"] as String,
+                ),
               );
             },
           ),

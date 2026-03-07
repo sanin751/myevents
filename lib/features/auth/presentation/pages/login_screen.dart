@@ -5,6 +5,7 @@ import 'package:myevents/core/utils/snackbar_utils.dart';
 import 'package:myevents/features/auth/presentation/pages/signup_screen.dart';
 import 'package:myevents/features/auth/presentation/state/auth_state.dart';
 import 'package:myevents/features/auth/presentation/view_models/auth_viewmodel.dart';
+import 'package:myevents/features/admin/presentation/pages/admin_dashboard_screen.dart';
 import 'package:myevents/features/dashboard/presentation/pages/dashboard_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -48,7 +49,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.authenticated) {
         SnackbarUtils.showSuccess(context, 'Login successful! Welcome back.');
-        AppRoutes.pushReplacement(context, const DashboardScreen());
+        // Check if user is admin
+        if (next.user?.role == 'admin') {
+          AppRoutes.pushReplacement(context, const AdminDashboardScreen());
+        } else {
+          AppRoutes.pushReplacement(context, const DashboardScreen());
+        }
       } else if (next.status == AuthStatus.error && next.errorMessage != null) {
         SnackbarUtils.showError(context, next.errorMessage!);
       }

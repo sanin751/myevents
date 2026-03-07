@@ -109,13 +109,13 @@ class ApiClient {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
-    Options? option,
+    Options? options,
   }) async {
     return _dio.put(
       path,
       data: data,
       queryParameters: queryParameters,
-      options: option,
+      options: options,
     );
   }
 

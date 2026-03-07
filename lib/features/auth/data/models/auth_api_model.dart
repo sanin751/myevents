@@ -6,6 +6,7 @@ class AuthApiModel {
   final String? lastName;
   final String? email;
   final String? password;
+  final String? role;
 
   AuthApiModel({
     this.authId,
@@ -13,6 +14,7 @@ class AuthApiModel {
     this.lastName,
     this.email,
     this.password,
+    this.role,
   });
 
   // info: To JSON
@@ -22,6 +24,7 @@ class AuthApiModel {
       "lastName": lastName,
       "email": email,
       "password": password,
+      "role": role,
     };
   }
 
@@ -32,6 +35,7 @@ class AuthApiModel {
       firstName: json["firstName"] as String,
       lastName: json["lastName"] as String,
       email: json["email"] as String,
+      role: json["role"] as String? ?? 'user',
     );
   }
 
@@ -43,6 +47,7 @@ class AuthApiModel {
       lastName: lastName!,
       email: email,
       password: password,
+      role: role ?? 'user',
     );
   }
 
@@ -54,6 +59,7 @@ class AuthApiModel {
       firstName: entity.firstName,
       lastName: entity.lastName,
       password: entity.password,
+      role: entity.role,
     );
   }
 

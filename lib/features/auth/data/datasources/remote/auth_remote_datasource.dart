@@ -9,11 +9,12 @@ import 'package:myevents/features/auth/data/models/auth_api_model.dart';
 final authRemoteDatasourceProvider = Provider<IAuthRemoteDatasource>((ref) {
   final apiClient = ref.read(apiClientProvider);
   final userSessionService = ref.read(userSessionServiceProvider);
-  final _tokenSessionService = ref.read(tokenServiceProvider);
+  final tokenSessionService = ref.read(tokenServiceProvider);
+
   return AuthRemoteDatasource(
     apiClient: apiClient,
     userSessionService: userSessionService,
-    tokenSessionService: _tokenSessionService,
+    tokenSessionService: tokenSessionService,
   );
 });
 
@@ -26,38 +27,54 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
     required ApiClient apiClient,
     required UserSessionService userSessionService,
     required TokenService tokenSessionService,
-  }) : _apiClient = apiClient,
-       _userSessionService = userSessionService,
-       _tokenSessionService = tokenSessionService;
-
-  @override
-  Future<AuthApiModel?> getUserById(String authId) {
-    // TODO: implement getUserById
-    throw UnimplementedError();
-  }
+  })  : _apiClient = apiClient,
+        _userSessionService = userSessionService,
+        _tokenSessionService = tokenSessionService;
 
   @override
   Future<AuthApiModel?> login(String email, String password) async {
     final response = await _apiClient.post(
       ApiEndpoints.userLogin,
-      data: {"email": email, "password": password},
+      data: {
+        "email": email,
+        "password": password,
+      },
     );
 
     if (response.data["success"] == true) {
-      final data = response.data["data"] as Map<String, dynamic>;
-      final user = AuthApiModel.fromJson(data);
-      final token = response.data['token'] as String;
+      final Map<String, dynamic> data =
+          response.data["data"] as Map<String, dynamic>;
+
+      final token = response.data["token"] as String;
+
       await _tokenSessionService.saveToken(token);
-      // info: Save user session
-      await _userSessionService.saveUserSession(
-        userId: user.authId,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      );
+
+      final Map<String, dynamic> safeJson = {
+        "_id": data["_id"],
+        "email": data["email"],
+        "firstName": data["firstName"] ?? "",
+        "lastName": data["lastName"] ?? "",
+        "role": data["role"] ?? "user",
+      };
+
+      final user = AuthApiModel.fromJson(safeJson);
+
+   await _userSessionService.saveUserSession(
+  userId: user.authId ?? "",
+  email: user.email ?? "",
+  firstName: user.firstName ?? "",
+  lastName: user.lastName ?? "",
+);
+
       return user;
     }
+
     return null;
+  }
+
+  @override
+  Future<AuthApiModel?> getUserById(String authId) {
+    throw UnimplementedError();
   }
 
   @override
@@ -69,8 +86,8 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
 
     if (response.data["success"] == true) {
       final data = response.data["data"] as Map<String, dynamic>;
-      final resistedUser = AuthApiModel.fromJson(data);
-      return resistedUser;
+      final registeredUser = AuthApiModel.fromJson(data);
+      return registeredUser;
     }
 
     return user;
