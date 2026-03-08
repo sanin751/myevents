@@ -69,16 +69,7 @@ class MusicScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Column(
               children: [
-                _packageCard(
-                  name: 'Live Music Per Show',
-                  height: 200,
-                  price: '\$800',
-                ),
-                _packageCard(
-                  name: 'DJ Per Event',
-                  height: 190,
-                  price: '\$1200',
-                ),
+                _packageCard(name: 'DJ Per Event', height: 200, price: '20000'),
               ],
             ),
           ],
@@ -124,14 +115,17 @@ class MusicScreen extends StatelessWidget {
                 Text(
                   name,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Starting at $price',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Color.fromRGBO(15, 15, 15, 1),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Row(
