@@ -7,8 +7,9 @@ import 'package:myevents/core/services/storage/user_session_service.dart';
 import 'package:myevents/features/profile/data/datasources/profile_datasource.dart';
 import 'package:myevents/features/profile/data/models/profile_model.dart';
 
-final profileRemoteDatasourceProvider =
-    Provider<IProfileRemoteDatasource>((ref) {
+final profileRemoteDatasourceProvider = Provider<IProfileRemoteDatasource>((
+  ref,
+) {
   return ProfileRemoteDatasource(
     apiClient: ref.read(apiClientProvider),
     userSessionService: ref.read(userSessionServiceProvider),
@@ -25,9 +26,9 @@ class ProfileRemoteDatasource implements IProfileRemoteDatasource {
     required ApiClient apiClient,
     required UserSessionService userSessionService,
     required TokenService tokenService,
-  })  : _apiClient = apiClient,
-        _userSessionService = userSessionService,
-        _tokenService = tokenService;
+  }) : _apiClient = apiClient,
+       _userSessionService = userSessionService,
+       _tokenService = tokenService;
 
   /// ================= UPDATE PROFILE =================
   @override
@@ -49,9 +50,7 @@ class ProfileRemoteDatasource implements IProfileRemoteDatasource {
       final response = await _apiClient.put(
         ApiEndpoints.updateProfile,
         data: formData,
-        options: Options(
-          headers: {'Authorization': 'Bearer $token'},
-        ),
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 
       if (response.data['success'] == true) {
@@ -77,26 +76,24 @@ class ProfileRemoteDatasource implements IProfileRemoteDatasource {
     }
   }
 
-@override
-Future<ProfileModel?> getUserById(String userId) async {
-  if (userId.isEmpty) {
-    print("User ID is empty");
+  @override
+  Future<ProfileModel?> getUserById(String userId) async {
+    if (userId.isEmpty) {
+      print("User ID is empty");
+      return null;
+    }
+
+    final token = await _tokenService.getToken();
+
+    final response = await _apiClient.get(
+      '${ApiEndpoints.getUser}/$userId',
+      option: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+
+    if (response.data['success'] == true) {
+      return ProfileModel.fromJson(response.data['data']);
+    }
+
     return null;
   }
-
-  final token = await _tokenService.getToken();
-
-  final response = await _apiClient.get(
-    '${ApiEndpoints.getUser}/$userId',
-    option: Options(
-      headers: {'Authorization': 'Bearer $token'},
-    ),
-  );
-
-  if (response.data['success'] == true) {
-    return ProfileModel.fromJson(response.data['data']);
-  }
-
-  return null;
-}
 }

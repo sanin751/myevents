@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:myevents/core/api/api_endpoints.dart';
 import 'package:myevents/core/services/storage/user_session_service.dart';
 import 'package:myevents/core/utils/snackbar_utils.dart';
-import 'package:myevents/features/profile/presentation/pages/profile_screen.dart';
 import 'package:myevents/features/profile/presentation/state/profile_state.dart';
 import 'package:myevents/features/profile/presentation/view_models/profile_view_model.dart';
 import 'package:myevents/features/profile/presentation/widgets/media_picker_bottom_sheet.dart';
@@ -22,23 +21,27 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final primaryOrange = const Color(0xFFE64A19);
   final lightYellow = const Color(0xFFFFF9C4);
   final buttonOrange = const Color(0xFFFFB74D);
+
   final _formKey = GlobalKey<FormState>();
 
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
+
   bool _isDataLoaded = false;
+
   final List<XFile?> _profile = [];
   String? _profilePicture;
 
   final _imagePicker = ImagePicker();
 
+  /// LOAD USER PROFILE
   Future<void> _loadUserData() async {
     final userSession = ref.read(userSessionServiceProvider);
     final userId = userSession.getCurrentUserId();
 
-    print("User ID from session: $userId");
-
     if (userId != null && userId.isNotEmpty) {
+      _isDataLoaded = false;
+
       await ref
           .read(profileViewModelProvider.notifier)
           .getProfileById(userId: userId);
@@ -48,6 +51,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadUserData();
     });
@@ -60,8 +64,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     super.dispose();
   }
 
+  /// CAMERA PERMISSION
   Future<bool> _requestPermission(Permission permission) async {
     final status = await permission.status;
+
     if (status.isGranted) return true;
 
     if (status.isDenied) {
@@ -69,16 +75,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       return result.isGranted;
     }
 
-    if (status.isPermanentlyDenied) {
-      // _showPermissionDeniedDialog();
-      return false;
-    }
-
     return false;
   }
 
+  /// CAMERA IMAGE
   Future<void> _pickFromCamera() async {
     final hasPermission = await _requestPermission(Permission.camera);
+
     if (!hasPermission) return;
 
     final XFile? photo = await _imagePicker.pickImage(
@@ -89,29 +92,27 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     if (photo != null) {
       setState(() {
         _profile.clear();
-        _profile.add(XFile(photo.path));
+        _profile.add(photo);
       });
     }
   }
 
+  /// GALLERY IMAGE
   Future<void> _pickFromGallery() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 80,
-      );
+    final XFile? image = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
 
-      if (image != null) {
-        setState(() {
-          _profile.clear();
-          _profile.add(XFile(image.path));
-        });
-      }
-    } catch (e) {
-      debugPrint('Image picker error: $e');
+    if (image != null) {
+      setState(() {
+        _profile.clear();
+        _profile.add(image);
+      });
     }
   }
 
+  /// MEDIA PICKER
   void _showMediaPicker() {
     MediaPickerBottomSheet.show(
       context,
@@ -120,21 +121,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
+  /// CLEAR IMAGE
   void _clearImage() {
     setState(() {
       _profile.clear();
+      _profilePicture = null;
     });
   }
 
+  /// UPDATE PROFILE
   void _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
-      // Process data
-      await ref
-          .read(profileViewModelProvider.notifier)
-          .updateProfile(
+      await ref.read(profileViewModelProvider.notifier).updateProfile(
             firstName: _firstNameController.text.trim(),
             lastName: _lastNameController.text.trim(),
-
             profile: _profile.isNotEmpty ? File(_profile.first!.path) : null,
           );
     }
@@ -147,218 +147,189 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           !_isDataLoaded &&
           next.user != null) {
         _isDataLoaded = true;
-        _firstNameController.text = next.user!.firstName ?? '';
-        _lastNameController.text = next.user!.lastName ?? '';
+
+        _firstNameController.text = next.user!.firstName ?? "";
+        _lastNameController.text = next.user!.lastName ?? "";
+
         _profilePicture = next.user!.profilePicture;
-        print("profile picture ${next.user!.profilePicture}");
-      } else if (next.status == ProfileStatus.updated) {
-        SnackbarUtils.showSuccess(context, 'Profile updated successfully!');
+      }
+
+      else if (next.status == ProfileStatus.updated) {
+        SnackbarUtils.showSuccess(context, "Profile updated successfully");
+
+        _isDataLoaded = false;
+
         Navigator.pop(context);
-      } else if (next.status == ProfileStatus.error &&
+      }
+
+      else if (next.status == ProfileStatus.error &&
           next.errorMessage != null) {
         SnackbarUtils.showError(context, next.errorMessage!);
       }
     });
 
     final profileState = ref.watch(profileViewModelProvider);
+
     return Scaffold(
       backgroundColor: lightYellow,
       appBar: AppBar(
         backgroundColor: primaryOrange,
-        elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Edit Profile',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
+        title: const Text("Edit Profile"),
       ),
+
       body: profileState.status == ProfileStatus.loading && !_isDataLoaded
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 25,
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      /// Profile Avatar
-                      if (_profile.isNotEmpty)
-                        GestureDetector(
-                          onTap: _showMediaPicker,
-                          child: Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 60,
-                                backgroundColor: Colors.pink.shade300,
-                                backgroundImage:
-                                    FileImage(File(_profile.first!.path))
-                                        as ImageProvider?,
-                                child: null,
-                              ),
-                              Positioned(
-                                top: 10,
-                                right: 10,
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: _clearImage,
-                                    child: const Text(
-                                      'x',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      else if (_profilePicture != null &&
-                          _profilePicture!.isNotEmpty)
-                        GestureDetector(
-                          onTap: _showMediaPicker,
-                          child: Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 60,
-                                backgroundImage: NetworkImage(
-                                  '${ApiEndpoints.baseUrl}$_profilePicture',
-                                ),
-                              ),
-                              Positioned(
-                                top: 10,
-                                right: 10,
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: _clearImage,
-                                    child: const Text(
-                                      'x',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      else
-                        GestureDetector(
-                          onTap: _showMediaPicker,
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.pink.shade300,
-                            child: const Icon(
-                              Icons.camera_alt,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
 
-                      const SizedBox(height: 30),
-
-                      /// Form Card
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
+                    /// PROFILE IMAGE
+                    if (_profile.isNotEmpty)
+                      GestureDetector(
+                        onTap: _showMediaPicker,
+                        child: Stack(
                           children: [
-                            _inputField(
-                              controller: _firstNameController,
+                            CircleAvatar(
+                              radius: 60,
+                              backgroundImage:
+                                  FileImage(File(_profile.first!.path)),
+                            ),
 
-                              label: 'First Name',
-                              icon: Icons.person_outline,
-                              hint: 'Change first name',
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: GestureDetector(
+                                onTap: _clearImage,
+                                child: const CircleAvatar(
+                                  radius: 12,
+                                  backgroundColor: Colors.white,
+                                  child: Icon(Icons.close, size: 16),
+                                ),
+                              ),
                             ),
-                            const SizedBox(height: 16),
-                            _inputField(
-                              controller: _lastNameController,
-                              label: 'Last Name',
-                              icon: Icons.person_outline,
-                              hint: 'Change last name',
-                            ),
-                            const SizedBox(height: 16),
                           ],
                         ),
-                      ),
+                      )
 
-                      const SizedBox(height: 30),
+                    else if (_profilePicture != null &&
+                        _profilePicture!.isNotEmpty)
+                      GestureDetector(
+                        onTap: _showMediaPicker,
+                        child: Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 60,
+                              backgroundImage: NetworkImage(
+                                "${ApiEndpoints.baseUrl}${_profilePicture!}",
+                              ),
+                            ),
 
-                      /// Save Button
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: buttonOrange,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: GestureDetector(
+                                onTap: _clearImage,
+                                child: const CircleAvatar(
+                                  radius: 12,
+                                  backgroundColor: Colors.white,
+                                  child: Icon(Icons.close, size: 16),
+                                ),
+                              ),
                             ),
-                          ),
-                          onPressed: _handleSubmit,
-                          child: const Text(
-                            'Save Changes',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          ],
+                        ),
+                      )
+
+                    else
+                      GestureDetector(
+                        onTap: _showMediaPicker,
+                        child: const CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.pink,
+                          child: Icon(Icons.camera_alt, color: Colors.white),
                         ),
                       ),
 
-                      const SizedBox(height: 14),
+                    const SizedBox(height: 30),
 
-                      /// Cancel Button
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: primaryOrange),
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
+                    /// FORM
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          _inputField(
+                            label: "First Name",
+                            icon: Icons.person,
+                            hint: "Enter first name",
+                            controller: _firstNameController,
                           ),
-                          onPressed: () => Navigator.pop(context),
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: primaryOrange,
-                              fontWeight: FontWeight.w600,
-                            ),
+
+                          const SizedBox(height: 16),
+
+                          _inputField(
+                            label: "Last Name",
+                            icon: Icons.person,
+                            hint: "Enter last name",
+                            controller: _lastNameController,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    /// SAVE BUTTON
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: buttonOrange,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
+                        onPressed: _handleSubmit,
+                        child: const Text("Save Changes"),
                       ),
-                    ],
-                  ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    /// CANCEL
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: primaryOrange),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(color: primaryOrange),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -370,28 +341,28 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     required IconData icon,
     required String hint,
     required TextEditingController controller,
-    TextInputType keyboardType = TextInputType.text,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-        ),
+
+        Text(label),
+
         const SizedBox(height: 6),
-        TextField(
+
+        TextFormField(
           controller: controller,
-          keyboardType: keyboardType,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Required";
+            }
+            return null;
+          },
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: Colors.orange),
             hintText: hint,
             filled: true,
             fillColor: const Color(0xFFFFFDE7),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide.none,

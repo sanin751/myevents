@@ -40,7 +40,6 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             /// SPECIAL OFFER BOX
             Align(
               alignment: Alignment.centerLeft,
@@ -65,7 +64,6 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     Text(
                       "Banquet Special",
                       style: TextStyle(
@@ -95,10 +93,7 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
             /// HEADER
             const Text(
               'Our Banquet Halls',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 16),
@@ -149,11 +144,9 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-
           /// IMAGE
           ClipRRect(
-            borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(16)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
 
             child: image != null && image.isNotEmpty
                 ? Image.network(
@@ -165,14 +158,10 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
                       return Container(
                         height: height,
                         color: Colors.grey[300],
-                        child: const Icon(
-                          Icons.image_not_supported,
-                          size: 50,
-                        ),
+                        child: const Icon(Icons.image_not_supported, size: 50),
                       );
                     },
                   )
-
                 : Container(
                     height: height,
                     color: Colors.grey[300],
@@ -187,12 +176,11 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 /// TITLE
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -203,8 +191,8 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
                 Text(
                   "Starting at Rs. ${price.toStringAsFixed(0)} per person",
                   style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
+                    fontSize: 15,
+                    color: Color(0xFF000000),
                   ),
                 ),
 
@@ -213,12 +201,29 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
                 /// BUTTONS
                 Row(
                   children: [
-
                     /// VIEW BUTTON
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          /// optional details page
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Banquet Details"),
+                                content: const Text(
+                                  "Best banquet in Kathmandu Valley with good service and tastyfood having 1000 people capacity.",
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Close"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         child: const Text('View'),
                       ),
@@ -230,14 +235,11 @@ class _BanquetScreenState extends ConsumerState<BanquetScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-
                           /// OPEN BOOKING PAGE
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => BookingPage(
-                                banquetId: banquetId,
-                              ),
+                              builder: (_) => BookingPage(banquetId: banquetId),
                             ),
                           );
                         },

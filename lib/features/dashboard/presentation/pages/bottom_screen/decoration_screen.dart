@@ -5,13 +5,11 @@ class DecorationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent = Theme.of(context).bottomNavigationBarTheme.selectedItemColor;
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text('Decoration'),
-        backgroundColor: Color(0xFFD84315),
+        backgroundColor: const Color(0xFFD84315),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -19,11 +17,15 @@ class DecorationScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
+
             const Text(
               'Decoration Themes',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
+
             const SizedBox(height: 16),
+
+            /// OFFER CARD
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -33,20 +35,13 @@ class DecorationScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: const Color(0xFFFF6F61),
                   borderRadius: BorderRadius.circular(14),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
                 ),
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Decor Special",
+                      "Decoration Special",
                       style: TextStyle(
                         fontSize: 23,
                         fontWeight: FontWeight.bold,
@@ -66,26 +61,30 @@ class DecorationScreen extends StatelessWidget {
                 ),
               ),
             ),
+
             const SizedBox(height: 24),
-            Column(
-              children: [
-                _packageCard(
-                  name: 'Silver Package',
-                  height: 180,
-                  price: '20000',
-                ),
-                _packageCard(name: 'Gold Package', height: 200, price: '35000'),
-                _packageCard(
-                  name: 'Diamond Package',
-                  height: 220,
-                  price: '50000',
-                ),
-                _packageCard(
-                  name: 'Platinium Package',
-                  height: 160,
-                  price: '80000',
-                ),
-              ],
+
+            /// PACKAGES
+            _packageCard(
+              name: 'Wedding Package                      Rs.50000',
+              height: 180,
+              price:
+                  'Includes Stage decoration - Gate decoration - Mandap - Name Board - Fireworks',
+              image: 'assets/image/decoration.png',
+            ),
+
+            _packageCard(
+              name: 'Birthday Package                      Rs.10000',
+              height: 200,
+              price: 'Includes Cake - Balloons - Decorations',
+              image: 'assets/image/image.png',
+            ),
+
+            _packageCard(
+              name: 'Outdoor Package                      Rs.30000',
+              height: 200,
+              price: 'Includes Galley decoration - Nameboard - Stage - Mandap',
+              image: 'assets/image/out decoration.jpg',
             ),
           ],
         ),
@@ -97,6 +96,7 @@ class DecorationScreen extends StatelessWidget {
     required String name,
     required double height,
     required String price,
+    required String image,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -114,14 +114,13 @@ class DecorationScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          /// IMAGE
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(
-              'assets/image/decoration.png',
-              height: height,
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset(image, height: height, fit: BoxFit.cover),
           ),
+
+          /// DETAILS
           Padding(
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -130,19 +129,25 @@ class DecorationScreen extends StatelessWidget {
                 Text(
                   name,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+
                 const SizedBox(height: 4),
+
                 Text(
-                  'Starting at $price',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ' $price',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Color.fromARGB(255, 5, 0, 0),
+                  ),
                 ),
+
                 const SizedBox(height: 12),
+
                 Row(
                   children: [
-                    const SizedBox(width: 8),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {},

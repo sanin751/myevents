@@ -38,14 +38,17 @@ class BookingRemoteDatasource {
       option: Options(headers: {'Authorization': 'Bearer $token'}),
     );
 
-    final List data = response.data['bookings'] ?? [];
+    final List data = response.data['data'] ?? [];
 
     return data.map((e) {
+      final venue = e['venueId'];
+
       return BookingApiModel(
-        bookingId: e['_id'],
-        venueId: e['venueId'],
-        eventDate: e['eventDate'],
-        guestCount: e['guestCount'],
+        bookingId: e['_id'] ?? "",
+        venueId: venue['_id'] ?? "",
+        banquetTitle: venue['title'] ?? "",
+        eventDate: e['eventDate'] ?? "",
+        guestCount: e['guestCount'] ?? 0,
       );
     }).toList();
   }

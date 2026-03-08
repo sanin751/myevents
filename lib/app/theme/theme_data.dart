@@ -44,7 +44,6 @@ ThemeData lightTheme = ThemeData(
   ),
 );
 
-
 /// ================= DARK THEME =================
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
@@ -66,7 +65,7 @@ ThemeData darkTheme = ThemeData(
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Color(0xFF1E1E1E),
     selectedItemColor: Color(0xFFFFAE37),
-    unselectedItemColor: Colors.grey,
+    unselectedItemColor: Color.fromARGB(255, 13, 1, 1),
     selectedIconTheme: IconThemeData(size: 30),
     selectedLabelStyle: TextStyle(fontSize: 18),
   ),
@@ -88,10 +87,8 @@ ThemeData darkTheme = ThemeData(
   ),
 );
 
-
 /// ================= THEME PROVIDER =================
 class ThemeNotifier extends Notifier<ThemeMode> {
-
   @override
   ThemeMode build() {
     return ThemeMode.light;
@@ -117,7 +114,6 @@ class ThemeNotifier extends Notifier<ThemeMode> {
   }
 }
 
-final themeProvider =
-    NotifierProvider<ThemeNotifier, ThemeMode>(
+final themeProvider = NotifierProvider<ThemeNotifier, ThemeMode>(
   ThemeNotifier.new,
 );
