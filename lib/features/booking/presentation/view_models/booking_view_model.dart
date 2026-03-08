@@ -36,10 +36,12 @@ class BookingViewModel extends Notifier<BookingState> {
   }
 
   Future<void> fetchBookings() async {
+    print("FETCH BOOKINGS CALLED");
 
     state = BookingState(loading: true, bookings: []);
 
     final result = await getBookingsUseCase();
+    print("BOOKINGS RESULT: $result");
 
     state = BookingState(
       loading: false,
